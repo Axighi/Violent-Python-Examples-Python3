@@ -13,16 +13,16 @@ def checkTTL(ipsrc, ttl):
     if IPTEST(ipsrc).iptype() == 'PRIVATE':
         return
 
-    if not ttlValues.has_key(ipsrc):
+    if ipsrc not in ttlValues:
         pkt = sr1(IP(dst=ipsrc) / ICMP(), \
           retry=0, timeout=1, verbose=0)
         ttlValues[ipsrc] = pkt.ttl
 
     if abs(int(ttl) - int(ttlValues[ipsrc])) > THRESH:
-        print '\n[!] Detected Possible Spoofed Packet From: '\
-          + ipsrc
-        print '[!] TTL: ' + ttl + ', Actual TTL: ' \
-            + str(ttlValues[ipsrc])
+        print('\n[!] Detected Possible Spoofed Packet From: '\
+          + ipsrc)
+        print('[!] TTL: ' + ttl + ', Actual TTL: ' \
+            + str(ttlValues[ipsrc]))
 
 
 def testTTL(pkt):

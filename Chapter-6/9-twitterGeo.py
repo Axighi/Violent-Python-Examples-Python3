@@ -1,12 +1,12 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import json
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import optparse
 from anonBrowser import *
 
 def get_tweets(handle):
-    query = urllib.quote_plus('from:' + handle+\
+    query = urllib.parse.quote_plus('from:' + handle+\
       ' since:2009-01-01 include:retweets')
     tweets = []
     browser = anonBrowser()
@@ -51,9 +51,9 @@ def twitter_locate(tweets,cities):
 	    locations.append(city)
 	    cityCnt+=1
    
-    print "[+] Found "+str(locCnt)+" locations "+\
+    print("[+] Found "+str(locCnt)+" locations "+\
       "via Twitter API and "+str(cityCnt)+\
-      " locations from text search."
+      " locations from text search.")
     return locations
 
 
@@ -72,7 +72,7 @@ def main():
     cityFile = options.cityFile
 
     if (handle==None):
-	print parser.usage
+	print(parser.usage)
 	exit(0)
 
     cities = []
@@ -80,7 +80,7 @@ def main():
     	 cities = load_cities(cityFile)
     tweets = get_tweets(handle)
     locations = twitter_locate(tweets,cities)
-    print "[+] Locations: "+str(locations)
+    print("[+] Locations: "+str(locations))
 
 if __name__ == '__main__':
     main()

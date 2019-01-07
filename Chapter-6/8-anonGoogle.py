@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import json
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import optparse
 from anonBrowser import *
 
@@ -20,7 +20,7 @@ class Google_Result:
 def google(search_term):
     ab = anonBrowser()
 
-    search_term = urllib.quote_plus(search_term)
+    search_term = urllib.parse.quote_plus(search_term)
     response = ab.open('http://ajax.googleapis.com/'+\
       'ajax/services/search/web?v=1.0&q='+ search_term)
     objects = json.load(response)
@@ -44,11 +44,11 @@ def main():
     keyword = options.keyword
 
     if options.keyword == None:
-        print parser.usage
+        print(parser.usage)
         exit(0)
     else:
         results = google(keyword)
-        print results
+        print(results)
 
 
 if __name__ == '__main__':

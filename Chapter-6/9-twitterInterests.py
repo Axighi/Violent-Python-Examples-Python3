@@ -3,14 +3,14 @@
 
 import json
 import re
-import urllib
-import urllib2
+import urllib.request, urllib.parse, urllib.error
+import urllib.request, urllib.error, urllib.parse
 import optparse
 from anonBrowser import *
 
 
 def get_tweets(handle):
-    query = urllib.quote_plus('from:' + handle+\
+    query = urllib.parse.quote_plus('from:' + handle+\
       ' since:2009-01-01 include:retweets')
     tweets = []
     browser = anonBrowser()
@@ -49,7 +49,7 @@ def find_interests(tweets):
                 continue
 
             try:
-                response = urllib2.urlopen(link)
+                response = urllib.request.urlopen(link)
                 full_link = response.url
                 interests['links'].append(full_link)
             except:
@@ -76,22 +76,22 @@ def main():
     (options, args) = parser.parse_args()
     handle = options.handle
     if handle == None:
-        print parser.usage
+        print(parser.usage)
         exit(0)
 
     tweets = get_tweets(handle)
     interests = find_interests(tweets)
-    print '\n[+] Links.'
+    print('\n[+] Links.')
     for link in set(interests['links']):
-        print ' [+] ' + str(link)
+        print(' [+] ' + str(link))
 
-    print '\n[+] Users.'
+    print('\n[+] Users.')
     for user in set(interests['users']):
-        print ' [+] ' + str(user)
+        print(' [+] ' + str(user))
 
-    print '\n[+] HashTags.'
+    print('\n[+] HashTags.')
     for hashtag in set(interests['hashtags']):
-        print ' [+] ' + str(hashtag)
+        print(' [+] ' + str(hashtag))
 
 
 if __name__ == '__main__':

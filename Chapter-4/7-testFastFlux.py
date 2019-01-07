@@ -8,7 +8,7 @@ def handlePkt(pkt):
     if pkt.haslayer(DNSRR):
         rrname = pkt.getlayer(DNSRR).rrname
         rdata = pkt.getlayer(DNSRR).rdata
-        if dnsRecords.has_key(rrname):
+        if rrname in dnsRecords:
             if rdata not in dnsRecords[rrname]:
                 dnsRecords[rrname].append(rdata)
         else:
@@ -22,8 +22,8 @@ def main():
         handlePkt(pkt)
     
     for item in dnsRecords:
-        print '[+] '+item+' has '+str(len(dnsRecords[item])) \
-            + ' unique IPs.'
+        print('[+] '+item+' has '+str(len(dnsRecords[item])) \
+            + ' unique IPs.')
 
 
 if __name__ == '__main__':

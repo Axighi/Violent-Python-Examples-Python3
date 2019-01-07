@@ -24,7 +24,7 @@ class interceptThread(threading.Thread):
 
     def interceptPkt(self, pkt):
         if self.foundUAV == False:
-            print '[*] UAV Found.'
+            print('[*] UAV Found.')
             self.foundUAV = True
         self.curPkt = pkt
         raw = pkt.sprintf('%Raw.load%')
@@ -62,12 +62,12 @@ class interceptThread(threading.Thread):
 def main():
     uavIntercept = interceptThread()
     uavIntercept.start()
-    print '[*] Listening for UAV Traffic. Please WAIT...'
+    print('[*] Listening for UAV Traffic. Please WAIT...')
     while uavIntercept.foundUAV == False:
         pass
 
     while True:
-        tmp = raw_input('[-] Press ENTER to Emergency Land UAV.')
+        tmp = input('[-] Press ENTER to Emergency Land UAV.')
         uavIntercept.emergencyland()
 
 if __name__ == '__main__':

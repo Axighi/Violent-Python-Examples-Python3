@@ -1,4 +1,4 @@
-import mechanize, cookielib, random
+import mechanize, http.cookiejar, random
 
 class anonBrowser(mechanize.Browser):
 
@@ -9,12 +9,12 @@ class anonBrowser(mechanize.Browser):
         self.user_agents = user_agents + ['Mozilla/4.0 ',\
 	'FireFox/6.01','ExactSearch', 'Nokia7110/1.0'] 
 
-        self.cookie_jar = cookielib.LWPCookieJar()
+        self.cookie_jar = http.cookiejar.LWPCookieJar()
 	self.set_cookiejar(self.cookie_jar)
         self.anonymize()
 	
     def clear_cookies(self):
-        self.cookie_jar = cookielib.LWPCookieJar()
+        self.cookie_jar = http.cookiejar.LWPCookieJar()
         self.set_cookiejar(self.cookie_jar)
     
     def change_user_agent(self):

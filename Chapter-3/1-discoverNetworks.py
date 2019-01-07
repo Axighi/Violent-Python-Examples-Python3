@@ -4,10 +4,10 @@
 import os
 import optparse
 import mechanize
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import re
-import urlparse
-from _winreg import *
+import urllib.parse
+from winreg import *
 
 
 def val2addr(val):
@@ -21,12 +21,12 @@ def val2addr(val):
 def wiglePrint(username, password, netid):
     browser = mechanize.Browser()
     browser.open('http://wigle.net')
-    reqData = urllib.urlencode({'credential_0': username,
+    reqData = urllib.parse.urlencode({'credential_0': username,
                                'credential_1': password})
     browser.open('https://wigle.net/gps/gps/main/login', reqData)
     params = {}
     params['netid'] = netid
-    reqParams = urllib.urlencode(params)
+    reqParams = urllib.parse.urlencode(params)
     respURL = 'http://wigle.net/gps/gps/main/confirmquery/'
     resp = browser.open(respURL, reqParams).read()
     mapLat = 'N/A'
@@ -37,14 +37,14 @@ def wiglePrint(username, password, netid):
     rLon = re.findall(r'maplon=.*\&', resp)
     if rLon:
         mapLon = rLon[0].split
-    print '[-] Lat: ' + mapLat + ', Lon: ' + mapLon
+    print('[-] Lat: ' + mapLat + ', Lon: ' + mapLon)
 
 
 def printNets(username, password):
     net = "SOFTWARE\Microsoft\Windows NT\CurrentVersion"+\
-          "\NetworkList\Signatures\Unmanaged"
+          "\NetworkList\Signatures\\Unmanaged"
     key = OpenKey(HKEY_LOCAL_MACHINE, net)
-    print '\n[*] Networks You have Joined.'
+    print('\n[*] Networks You have Joined.')
     for i in range(100):
         try:
             guid = EnumKey(key, i)
@@ -53,7 +53,7 @@ def printNets(username, password):
             (n, name, t) = EnumValue(netKey, 4)
             macAddr = val2addr(addr)
             netName = str(name)
-            print '[+] ' + netName + '  ' + macAddr
+            print('[+] ' + netName + '  ' + macAddr)
             wiglePrint(username, password, macAddr)
             CloseKey(netKey)
         except:
@@ -71,7 +71,7 @@ def main():
     username = options.username
     password = options.password
     if username == None or password == None:
-        print parser.usage
+        print(parser.usage)
         exit(0)
     else:
         printNets(username, password)

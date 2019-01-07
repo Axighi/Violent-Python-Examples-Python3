@@ -1,8 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 import optparse
-from urlparse import urlsplit
+from urllib.parse import urlsplit
 from os.path import basename
 from bs4 import BeautifulSoup
 from PIL import Image
@@ -10,8 +10,8 @@ from PIL.ExifTags import TAGS
 
 
 def findImages(url):
-    print '[+] Finding images on ' + url
-    urlContent = urllib2.urlopen(url).read()
+    print('[+] Finding images on ' + url)
+    urlContent = urllib.request.urlopen(url).read()
     soup = BeautifulSoup(urlContent)
     imgTags = soup.findAll('img')
     return imgTags
@@ -19,9 +19,9 @@ def findImages(url):
 
 def downloadImage(imgTag):
     try:
-        print '[+] Dowloading image...'
+        print('[+] Dowloading image...')
         imgSrc = imgTag['src']
-        imgContent = urllib2.urlopen(imgSrc).read()
+        imgContent = urllib.request.urlopen(imgSrc).read()
         imgFileName = basename(urlsplit(imgSrc)[2])
         imgFile = open(imgFileName, 'wb')
         imgFile.write(imgContent)
@@ -37,13 +37,13 @@ def testForExif(imgFileName):
         imgFile = Image.open(imgFileName)
         info = imgFile._getexif()
         if info:
-            for (tag, value) in info.items():
+            for (tag, value) in list(info.items()):
                 decoded = TAGS.get(tag, tag)
                 exifData[decoded] = value
             exifGPS = exifData['GPSInfo']
             if exifGPS:
-                print '[*] ' + imgFileName + \
-                 ' contains GPS MetaData'
+                print('[*] ' + imgFileName + \
+                 ' contains GPS MetaData')
     except:
         pass
 
@@ -57,7 +57,7 @@ def main():
     (options, args) = parser.parse_args()
     url = options.url
     if url == None:
-        print parser.usage
+        print(parser.usage)
         exit(0)
     else:
         imgTags = findImages(url)

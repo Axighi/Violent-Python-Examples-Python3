@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import json
-import urllib
+import urllib.request, urllib.parse, urllib.error
 from anonBrowser import *
 
 class reconPerson:
@@ -18,13 +18,13 @@ class reconPerson:
           self.last_name + ' has job ' + self.job
 
     def get_social(self, media_name):
-        if self.social_media.has_key(media_name):
+        if media_name in self.social_media:
             return self.social_media[media_name]
 
         return None
 
     def query_twitter(self, query):
-        query = urllib.quote_plus(query)
+        query = urllib.parse.quote_plus(query)
         results = []
         browser = anonBrowser()
         response = browser.open(\
@@ -41,6 +41,6 @@ class reconPerson:
 
 
 ap = reconPerson('Boondock', 'Saint')
-print ap.query_twitter(\
-  'from:th3j35t3r since:2010-01-01 include:retweets')
+print(ap.query_twitter(\
+  'from:th3j35t3r since:2010-01-01 include:retweets'))
 
